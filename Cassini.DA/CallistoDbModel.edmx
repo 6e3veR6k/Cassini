@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CallistoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6005: The data type 'hierarchyid' is currently not supported for the target Entity Framework version; the column 'hid' in the table 'Callisto.dbo.Branches' was excluded.-->
+        <EntityType Name="Branches">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ParentGID" Type="uniqueidentifier" />
+          <Property Name="OrganizationGID" Type="uniqueidentifier" />
+          <Property Name="DirectorGID" Type="uniqueidentifier" />
+          <Property Name="BranchCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ControlBlanks" Type="bit" />
+          <Property Name="BranchCategoryGID" Type="uniqueidentifier" />
+          <Property Name="AuthorGID" Type="uniqueidentifier" />
+          <Property Name="Level" Type="int" />
+          <Property Name="IsBlanksAvailable" Type="bit" Nullable="false" />
+          <Property Name="IsClosed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AgentActStatuses">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="IsRemovable" Type="bit" Nullable="false" />
+          <Property Name="IsEditable" Type="bit" Nullable="false" />
+          <Property Name="IsStornable" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AgentChanels">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParentGID" Type="uniqueidentifier" />
+          <Property Name="IsPremium" Type="bit" Nullable="false" />
+          <Property Name="DocumentTypeGID" Type="uniqueidentifier" />
+          <Property Name="ChanelPaymentTypeGID" Type="uniqueidentifier" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsVisible" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommissionTypes">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Caption" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsNullable" Type="bit" Nullable="false" />
+          <Property Name="IsRequired" Type="bit" Nullable="false" />
+          <Property Name="IsContragent" Type="bit" Nullable="false" />
+          <Property Name="ParentGID" Type="uniqueidentifier" />
+          <Property Name="IsCascade" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AgentChanels_AgentChanels">
+          <End Role="AgentChanels" Type="Self.AgentChanels" Multiplicity="0..1" />
+          <End Role="AgentChanels1" Type="Self.AgentChanels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgentChanels">
+              <PropertyRef Name="gid" />
+            </Principal>
+            <Dependent Role="AgentChanels1">
+              <PropertyRef Name="ParentGID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Branches_Branches">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="Branches1" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="gid" />
+            </Principal>
+            <Dependent Role="Branches1">
+              <PropertyRef Name="ParentGID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AgentActsComissionsSum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Period" Type="date" Mode="In" />
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+          <Parameter Name="StatusGID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CommissionType" Type="uniqueidentifier" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ActId" Type="int" Nullable="false" />
+                <Property Name="StartPeriod" Type="date" Nullable="false" />
+                <Property Name="ChanelGID" Type="uniqueidentifier" Nullable="false" />
+                <Property Name="IdentificationCodeEDRPOU" Type="nvarchar" MaxLength="12" />
+                <Property Name="AgentName" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="DocumentType" Type="nvarchar" MaxLength="100" />
+                <Property Name="BranchCode" Type="nvarchar" MaxLength="4" />
+                <Property Name="DirectionGid" Type="uniqueidentifier" Nullable="false" />
+                <Property Name="ProgramCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="RealPaymentValue" Type="money" />
+                <Property Name="CommissionValue" Type="money" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <EntityContainer Name="CallistoModelStoreContainer">
+          <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgentActStatuses" EntityType="Self.AgentActStatuses" Schema="meta" store:Type="Tables" />
+          <EntitySet Name="AgentChanels" EntityType="Self.AgentChanels" Schema="meta" store:Type="Tables" />
+          <EntitySet Name="CommissionTypes" EntityType="Self.CommissionTypes" Schema="meta" store:Type="Tables" />
+          <AssociationSet Name="FK_AgentChanels_AgentChanels" Association="Self.FK_AgentChanels_AgentChanels">
+            <End Role="AgentChanels" EntitySet="AgentChanels" />
+            <End Role="AgentChanels1" EntitySet="AgentChanels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Branches_Branches" Association="Self.FK_Branches_Branches">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Branches1" EntitySet="Branches" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CallistoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="AgentActsComissionsSum_Result">
+          <Property Name="ActId" Type="Int32" Nullable="false" />
+          <Property Name="StartPeriod" Type="DateTime" Nullable="false" />
+          <Property Name="ChanelGID" Type="Guid" Nullable="false" />
+          <Property Name="IdentificationCodeEDRPOU" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="AgentName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DocumentType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BranchCode" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="DirectionGid" Type="Guid" Nullable="false" />
+          <Property Name="ProgramCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RealPaymentValue" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CommissionValue" Type="Decimal" Precision="19" Scale="4" />
+        </ComplexType>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gid" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentGID" Type="Guid" />
+          <Property Name="OrganizationGID" Type="Guid" />
+          <Property Name="DirectorGID" Type="Guid" />
+          <Property Name="BranchCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ControlBlanks" Type="Boolean" />
+          <Property Name="BranchCategoryGID" Type="Guid" />
+          <Property Name="AuthorGID" Type="Guid" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="IsBlanksAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="IsClosed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Branches1" Relationship="Self.FK_Branches_Branches" FromRole="Branches" ToRole="Branches1" />
+          <NavigationProperty Name="Branch1" Relationship="Self.FK_Branches_Branches" FromRole="Branches1" ToRole="Branches" />
+        </EntityType>
+        <EntityType Name="AgentActStatus">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gid" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsRemovable" Type="Boolean" Nullable="false" />
+          <Property Name="IsEditable" Type="Boolean" Nullable="false" />
+          <Property Name="IsStornable" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AgentChanel">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gid" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentGID" Type="Guid" />
+          <Property Name="IsPremium" Type="Boolean" Nullable="false" />
+          <Property Name="DocumentTypeGID" Type="Guid" />
+          <Property Name="ChanelPaymentTypeGID" Type="Guid" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsVisible" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AgentChanels1" Relationship="Self.FK_AgentChanels_AgentChanels" FromRole="AgentChanels" ToRole="AgentChanels1" />
+          <NavigationProperty Name="AgentChanel1" Relationship="Self.FK_AgentChanels_AgentChanels" FromRole="AgentChanels1" ToRole="AgentChanels" />
+        </EntityType>
+        <EntityType Name="CommissionType">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gid" Type="Guid" Nullable="false" />
+          <Property Name="Caption" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsNullable" Type="Boolean" Nullable="false" />
+          <Property Name="IsRequired" Type="Boolean" Nullable="false" />
+          <Property Name="IsContragent" Type="Boolean" Nullable="false" />
+          <Property Name="ParentGID" Type="Guid" />
+          <Property Name="IsCascade" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Branches_Branches">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="0..1" />
+          <End Role="Branches1" Type="Self.Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="gid" />
+            </Principal>
+            <Dependent Role="Branches1">
+              <PropertyRef Name="ParentGID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AgentChanels_AgentChanels">
+          <End Role="AgentChanels" Type="Self.AgentChanel" Multiplicity="0..1" />
+          <End Role="AgentChanels1" Type="Self.AgentChanel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgentChanels">
+              <PropertyRef Name="gid" />
+            </Principal>
+            <Dependent Role="AgentChanels1">
+              <PropertyRef Name="ParentGID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CallistoDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Branches" EntityType="Self.Branch" />
+          <EntitySet Name="AgentActStatuses" EntityType="Self.AgentActStatus" />
+          <EntitySet Name="AgentChanels" EntityType="Self.AgentChanel" />
+          <EntitySet Name="CommissionTypes" EntityType="Self.CommissionType" />
+          <AssociationSet Name="FK_Branches_Branches" Association="Self.FK_Branches_Branches">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Branches1" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AgentChanels_AgentChanels" Association="Self.FK_AgentChanels_AgentChanels">
+            <End Role="AgentChanels" EntitySet="AgentChanels" />
+            <End Role="AgentChanels1" EntitySet="AgentChanels" />
+          </AssociationSet>
+          <FunctionImport Name="AgentActsComissionsSum" IsComposable="true" ReturnType="Collection(CallistoModel.AgentActsComissionsSum_Result)">
+            <Parameter Name="Period" Mode="In" Type="DateTime" />
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+            <Parameter Name="StatusGID" Mode="In" Type="Guid" />
+            <Parameter Name="CommissionType" Mode="In" Type="Guid" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CallistoModelStoreContainer" CdmEntityContainer="CallistoDb">
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="CallistoModel.Branch">
+              <MappingFragment StoreEntitySet="Branches">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="gid" ColumnName="gid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ParentGID" ColumnName="ParentGID" />
+                <ScalarProperty Name="OrganizationGID" ColumnName="OrganizationGID" />
+                <ScalarProperty Name="DirectorGID" ColumnName="DirectorGID" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="ControlBlanks" ColumnName="ControlBlanks" />
+                <ScalarProperty Name="BranchCategoryGID" ColumnName="BranchCategoryGID" />
+                <ScalarProperty Name="AuthorGID" ColumnName="AuthorGID" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="IsBlanksAvailable" ColumnName="IsBlanksAvailable" />
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentActStatuses">
+            <EntityTypeMapping TypeName="CallistoModel.AgentActStatus">
+              <MappingFragment StoreEntitySet="AgentActStatuses">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="gid" ColumnName="gid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsRemovable" ColumnName="IsRemovable" />
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
+                <ScalarProperty Name="IsStornable" ColumnName="IsStornable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgentChanels">
+            <EntityTypeMapping TypeName="CallistoModel.AgentChanel">
+              <MappingFragment StoreEntitySet="AgentChanels">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="gid" ColumnName="gid" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ParentGID" ColumnName="ParentGID" />
+                <ScalarProperty Name="IsPremium" ColumnName="IsPremium" />
+                <ScalarProperty Name="DocumentTypeGID" ColumnName="DocumentTypeGID" />
+                <ScalarProperty Name="ChanelPaymentTypeGID" ColumnName="ChanelPaymentTypeGID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommissionTypes">
+            <EntityTypeMapping TypeName="CallistoModel.CommissionType">
+              <MappingFragment StoreEntitySet="CommissionTypes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="gid" ColumnName="gid" />
+                <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IsNullable" ColumnName="IsNullable" />
+                <ScalarProperty Name="IsRequired" ColumnName="IsRequired" />
+                <ScalarProperty Name="IsContragent" ColumnName="IsContragent" />
+                <ScalarProperty Name="ParentGID" ColumnName="ParentGID" />
+                <ScalarProperty Name="IsCascade" ColumnName="IsCascade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionName="CallistoModel.Store.AgentActsComissionsSum" FunctionImportName="AgentActsComissionsSum">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CallistoModel.AgentActsComissionsSum_Result">
+                <ScalarProperty Name="ActId" ColumnName="ActId" />
+                <ScalarProperty Name="StartPeriod" ColumnName="StartPeriod" />
+                <ScalarProperty Name="ChanelGID" ColumnName="ChanelGID" />
+                <ScalarProperty Name="IdentificationCodeEDRPOU" ColumnName="IdentificationCodeEDRPOU" />
+                <ScalarProperty Name="AgentName" ColumnName="AgentName" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="DirectionGid" ColumnName="DirectionGid" />
+                <ScalarProperty Name="ProgramCode" ColumnName="ProgramCode" />
+                <ScalarProperty Name="RealPaymentValue" ColumnName="RealPaymentValue" />
+                <ScalarProperty Name="CommissionValue" ColumnName="CommissionValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

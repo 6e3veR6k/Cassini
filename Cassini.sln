@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassini.UI", "Cassini.UI\Cassini.UI.csproj", "{F69FB858-B5E2-4AF1-B41D-69E5DCA566A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassini.DA", "Cassini.DA\Cassini.DA.csproj", "{FB321631-58A0-4B16-8716-E78D40F12803}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassini.Model", "Cassini.Model\Cassini.Model.csproj", "{B54A9CC0-D64A-48AD-BCA9-20D5D464B28D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{F69FB858-B5E2-4AF1-B41D-69E5DCA566A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F69FB858-B5E2-4AF1-B41D-69E5DCA566A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F69FB858-B5E2-4AF1-B41D-69E5DCA566A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB321631-58A0-4B16-8716-E78D40F12803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB321631-58A0-4B16-8716-E78D40F12803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB321631-58A0-4B16-8716-E78D40F12803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB321631-58A0-4B16-8716-E78D40F12803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54A9CC0-D64A-48AD-BCA9-20D5D464B28D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54A9CC0-D64A-48AD-BCA9-20D5D464B28D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54A9CC0-D64A-48AD-BCA9-20D5D464B28D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54A9CC0-D64A-48AD-BCA9-20D5D464B28D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,8 +5,82 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cassini.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:view="clr-namespace:Cassini.UI.View"
+        Title="Експорт даних із агентських актів" 
+        Height="940" 
+        Width="1280"
+        MinHeight="940" 
+        MinWidth="1280"
+        TextElement.Foreground="{DynamicResource PrimaryHueDarkBrush}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="12"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" 
+                                                     TrueValue="Collapsed"
+                                                     FalseValue="Visible" />
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="425" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--header-->
+        <materialDesign:ColorZone
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Height="120"
+            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+            Mode="Light">
+            <StackPanel Orientation="Vertical">
+                <view:HeaderView />
+                <view:ParametersView DataContext="{Binding ParametersViewModel}"/>
+            </StackPanel>
+        </materialDesign:ColorZone>
+        <!--body-->
+        <view:DirectionsView DataContext="{Binding DirectionsViewModel}" Grid.Column="0" Grid.Row="2"/>
+
+        <ListBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="20"
+            materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+            materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
+            ItemsSource="{Binding SelectedDirections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+        </ListBox>
     </Grid>
 </Window>
+

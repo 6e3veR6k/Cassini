@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Cassini.UI.View.HeaderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cassini.UI.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+    <Grid>
+        <materialDesign:ColorZone
+            Height="60"
+            Mode="PrimaryDark">
+            <StackPanel Margin="8" Orientation="Horizontal">
+                <ToggleButton
+                    Margin="8,0"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignActionAccentToggleButton}"
+                    ToolTip="Cassini">
+                    <materialDesign:PackIcon
+                        Width="24"
+                        Height="24"
+                        Kind="CheckAll" />
+                </ToggleButton>
+                <TextBlock Margin="12,0" VerticalAlignment="Center"
+                           Style="{StaticResource MaterialDesignHeadlineTextBlock}">
+                    Cassini
+                </TextBlock>
+            </StackPanel>
+        </materialDesign:ColorZone>
+    </Grid>
+</UserControl>
