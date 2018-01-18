@@ -9,23 +9,12 @@
     <Grid>
         <materialDesign:ColorZone
             Height="60"
-            Mode="PrimaryDark">
-            <StackPanel Margin="8" Orientation="Horizontal">
-                <ToggleButton
-                    Margin="8,0"
-                    IsEnabled="False"
-                    Style="{StaticResource MaterialDesignActionAccentToggleButton}"
-                    ToolTip="Cassini">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="CheckAll" />
-                </ToggleButton>
-                <TextBlock Margin="12,0" VerticalAlignment="Center"
-                           Style="{StaticResource MaterialDesignHeadlineTextBlock}">
-                    Cassini
-                </TextBlock>
-            </StackPanel>
+            Mode="PrimaryLight">
+            <Grid>
+                <local:ParametersView DataContext="{Binding ParametersViewModel}"/>
+            </Grid>
+
+            
         </materialDesign:ColorZone>
     </Grid>
 </UserControl>

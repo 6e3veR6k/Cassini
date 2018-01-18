@@ -1,19 +1,16 @@
-﻿using System.Collections.ObjectModel;
-using Cassini.Model;
-using Prism.Events;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
 namespace Cassini.UI.ViewModel
 {
-    public class DirectionViewModel: BindableBase, ISelectableViewModel
+    public class ChanelViewModel:BindableBase, ISelectableViewModel
     {
-
         private bool _isSelected;
-        public System.Guid Guid { get; set; }
-        public string Code { get; set; }
-        public string Title { get; set; }
 
-        public string FullName => $"{this.Code} {this.Title}";
+
+        public System.Guid Guid { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+        
 
         public bool IsSelected
         {
@@ -25,6 +22,5 @@ namespace Cassini.UI.ViewModel
                 RaisePropertyChanged(nameof(IsSelected));
             }
         }
-
     }
 }

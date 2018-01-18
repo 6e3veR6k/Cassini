@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CallistoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CallistoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6005: The data type 'hierarchyid' is currently not supported for the target Entity Framework version; the column 'hid' in the table 'Callisto.dbo.Branches' was excluded.-->
         <EntityType Name="Branches">
@@ -114,6 +114,17 @@ warning 6005: The data type 'hierarchyid' is currently not supported for the tar
             </CollectionType>
           </ReturnType>
         </Function>
+        <Function Name="GetDirections" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="BranchCode" Type="nvarchar" MaxLength="50" />
+                <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="gid" Type="uniqueidentifier" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="CallistoModelStoreContainer">
           <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AgentActStatuses" EntityType="Self.AgentActStatuses" Schema="meta" store:Type="Tables" />
@@ -128,8 +139,7 @@ warning 6005: The data type 'hierarchyid' is currently not supported for the tar
             <End Role="Branches1" EntitySet="Branches" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CallistoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -253,7 +263,13 @@ warning 6005: The data type 'hierarchyid' is currently not supported for the tar
             <Parameter Name="StatusGID" Mode="In" Type="Guid" />
             <Parameter Name="CommissionType" Mode="In" Type="Guid" />
           </FunctionImport>
+          <FunctionImport Name="GetDirections" IsComposable="true" ReturnType="Collection(CallistoModel.GetDirections_Result)" />
         </EntityContainer>
+        <ComplexType Name="GetDirections_Result">
+          <Property Type="String" Name="BranchCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" />
+          <Property Type="Guid" Name="gid" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -337,6 +353,15 @@ warning 6005: The data type 'hierarchyid' is currently not supported for the tar
                 <ScalarProperty Name="ProgramCode" ColumnName="ProgramCode" />
                 <ScalarProperty Name="RealPaymentValue" ColumnName="RealPaymentValue" />
                 <ScalarProperty Name="CommissionValue" ColumnName="CommissionValue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDirections" FunctionName="CallistoModel.Store.GetDirections">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CallistoModel.GetDirections_Result">
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="gid" ColumnName="gid" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

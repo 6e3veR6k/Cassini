@@ -79,6 +79,9 @@
     <Compile Include="CommissionType.cs">
       <DependentUpon>CallistoDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetDirections_Result.cs">
+      <DependentUpon>CallistoDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

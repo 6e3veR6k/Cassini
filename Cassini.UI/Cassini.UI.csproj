@@ -48,6 +48,15 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.1.953, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.3.1.953\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism, Version=7.0.0.362, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.0.0.362\lib\net45\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -55,6 +64,10 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -73,20 +86,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Event\ActResultSetLoadEvent.cs" />
+    <Compile Include="Event\OnParametersButtonClickEvent.cs" />
+    <Compile Include="Event\SelectedDirectionsEvent.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\ActsParametersDataService.cs" />
+    <Compile Include="Service\AgetActsCommissionDataService.cs" />
     <Compile Include="Service\DirectionDataSevice.cs" />
     <Compile Include="Service\IActsParametersDataService.cs" />
+    <Compile Include="Service\IAgetActsCommissionDataService.cs" />
     <Compile Include="Service\IDirectionDataSevice.cs" />
     <Compile Include="StartUp\Bootstrapper.cs" />
-    <Compile Include="ViewModel\BaseView.cs" />
+    <Compile Include="ViewModel\ActResultSetSumView.cs" />
+    <Compile Include="ViewModel\AgentActsViewModel.cs" />
+    <Compile Include="ViewModel\ChanelViewModel.cs" />
     <Compile Include="ViewModel\DirectionsViewModel.cs" />
     <Compile Include="ViewModel\DirectionViewModel.cs" />
+    <Compile Include="ViewModel\IAgentActsViewModel.cs" />
     <Compile Include="ViewModel\IDirectionsViewModel.cs" />
+    <Compile Include="ViewModel\InputParametersModel.cs" />
     <Compile Include="ViewModel\IParametersViewModel.cs" />
     <Compile Include="ViewModel\ISelectableViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParametersViewModel.cs" />
+    <Compile Include="View\AgentActsView.xaml.cs">
+      <DependentUpon>AgentActsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DirectionsView.xaml.cs">
       <DependentUpon>DirectionsView.xaml</DependentUpon>
     </Compile>
@@ -108,6 +133,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\AgentActsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DirectionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -146,7 +175,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cassini.DA\Cassini.DA.csproj">

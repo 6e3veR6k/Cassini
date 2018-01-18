@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActsResultSet.cs" />
     <Compile Include="ActStatus.cs" />
     <Compile Include="Chanel.cs" />
     <Compile Include="Commission.cs" />

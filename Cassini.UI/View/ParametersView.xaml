@@ -5,48 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cassini.UI.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
-             >
-    <Grid Height="60">
+             mc:Ignorable="d" >
+    <Grid Height="60" Margin="8,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="140" />
             <ColumnDefinition Width="140" />
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="140" />
         </Grid.ColumnDefinitions>
 
         <DatePicker
-                        Grid.Column="0"
-                        Margin="15 14 15 0"
-                        Width="110"
-                        Height="24"
-                        x:Name="First"
-                        materialDesign:HintAssist.Hint="Період"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            Grid.Column="0"
+            Margin="15 14 15 0"
+            Width="110"
+            Height="24"
+            x:Name="First"
+            Language="uk-UA"
+            materialDesign:HintAssist.Hint="Період"
+            SelectedDate="{Binding PeriodDateTime}"
+            Style="{DynamicResource MaterialDesignFloatingHintDatePicker}" />
 
         <DatePicker
-                        Grid.Column="1"
-                        Margin="15 14 15 0"
-                        Width="110"
-                        Height="24"
-                        x:Name="Second"
-                        materialDesign:HintAssist.Hint="Затвердженні"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            Grid.Column="1"
+            Margin="15 14 15 0"
+            Width="110"
+            Height="24"
+            x:Name="Second"
+            SelectedDate="{Binding StartDateTime}"
+            Language="uk-UA"
+            materialDesign:HintAssist.Hint="Затвердженні"
+            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
         <ComboBox
-                        Grid.Column="2"
-                        Margin="10"
-                        Width="110"
-                        materialDesign:HintAssist.Hint="Статус актів"
-                        ItemsSource="{Binding ActStatuses}"
-                        DisplayMemberPath="Name"
-                        SelectedValuePath="Guid"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+            Grid.Column="2"
+            Margin="10"
+            Width="110"
+            materialDesign:HintAssist.Hint="Статус актів"
+            ItemsSource="{Binding ActStatuses}"
+            SelectedItem="{Binding SelectedActStatus, Mode=TwoWay}"
+            DisplayMemberPath="Name"
+            SelectedValuePath="Guid"
+            Style="{StaticResource MaterialDesignFloatingHintComboBox}">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel />
@@ -55,15 +59,16 @@
         </ComboBox>
 
         <ComboBox
-                        Grid.Column="3"
-                        Margin="10"
-                        Width="110"
-                        MinWidth="90"
-                        materialDesign:HintAssist.Hint="Тип комісії"
-                        ItemsSource="{Binding CommissionTypes}"
-                        DisplayMemberPath="TypeDefinition"
-                        SelectedValuePath="Guid"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+            Grid.Column="6"
+            Margin="10"
+            Width="110"
+            MinWidth="90"
+            materialDesign:HintAssist.Hint="Тип комісії"
+            ItemsSource="{Binding CommissionTypes}"
+            SelectedItem="{Binding SelectedCommission, Mode=TwoWay}"
+            DisplayMemberPath="TypeDefinition"
+            SelectedValuePath="Guid"
+            Style="{StaticResource MaterialDesignFloatingHintComboBox}">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel />
@@ -71,22 +76,30 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
 
-        <materialDesign:PopupBox 
-                        Grid.Column="4"
-                        Width="40"
-                        Height="40"
-                        Margin="10,10"
-                        VerticalAlignment="Center"
-                        StaysOpen="True">
+        <materialDesign:PopupBox
+            x:Name="PopupBoxChanels"
+            Grid.Column="5"
+            Height="40"
+            Margin="10,10"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            StaysOpen="True">
             <materialDesign:PopupBox.ToggleContent>
-                <materialDesign:PackIcon
-                                Width="24"
-                                Height="24"
-                                Kind="AccountMultiple" />
+                <Grid Width="32" Height="32">
+                    <Border CornerRadius="16" Background="{DynamicResource MaterialDesignLightBackground}">
+                        <materialDesign:PackIcon
+                            Foreground="{DynamicResource MaterialDesignDarkBackground}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="24"
+                            Height="24"
+                            Kind="AccountMultiple" />
+                    </Border>
+                </Grid>
             </materialDesign:PopupBox.ToggleContent>
             <Grid
-                            Width="420"
-                            Margin="8,8,8,8">
+                Width="420"
+                Margin="8,8,8,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -96,18 +109,18 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="8,8,8,16"
-                                Style="{StaticResource MaterialDesignTitleTextBlock}">
-                                Агентські канали
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="8,8,8,16"
+                    Style="{StaticResource MaterialDesignTitleTextBlock}">
+                    Агентські канали
                 </TextBlock>
                 <ItemsControl
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Grid.IsSharedSizeScope="True"
-                                ItemsSource="{Binding Chanels}">
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Grid.IsSharedSizeScope="True"
+                    ItemsSource="{Binding Chanels}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border x:Name="Border">
@@ -118,27 +131,30 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" Height="40" Margin="8,0">
                                         <CheckBox
-                                                        FontSize="12"
-                                                        Content="{Binding Code}"
-                                                        VerticalAlignment="Center"
-                                                        IsChecked="{Binding IsSelected}"
-                                                        Style="{StaticResource MaterialDesignActionCheckBox}"
-                                                        ToolTip="Канал агента" />
+                                            x:Name="ChanelCheckBox"
+                                            FontSize="12"
+                                            Content="{Binding Code}"
+                                            VerticalAlignment="Center"
+                                            IsChecked="{Binding IsSelected}"
+                                            Style="{StaticResource MaterialDesignActionCheckBox}"
+                                            ToolTip="Канал агента" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="8,8,8,8"
-                                                            Orientation="Horizontal">
+                                                Orientation="Horizontal">
                                         <TextBlock FontSize="10" Text="{Binding Name}"
-                                                               VerticalAlignment="Center"
-                                                               TextWrapping="Wrap"
-                                                               Width="340"
-                                                               Margin="8,0" />
+                                                   VerticalAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   Width="340"
+                                                   Margin="8,0" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                                     <Setter TargetName="Border" Property="Background"
-                                                        Value="{DynamicResource MaterialDesignSelection}" />
+                                            Value="{DynamicResource MaterialDesignSelection}" />
+                                    <Setter TargetName="ChanelCheckBox" Property="Background"
+                                            Value="{DynamicResource SecondaryAccentBrush}" />
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
@@ -149,20 +165,31 @@
         </materialDesign:PopupBox>
 
         <Button
-	                    Width="120"
-                        Grid.Column="5"
-                        Style="{StaticResource MaterialDesignFlatButton}"
-                        ToolTip="Звіт по актам агентів">
-            ПЕРЕГЛЯД
+            Width="120"
+            Grid.Column="7"
+            Height="32"
+            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+            Command="{Binding OnViewReportButtonClick}"
+            ToolTip="Звіт по актам агентів">
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="24"
+                    Height="24"
+                    Kind="ArrowDownBoldCircle" />
+                <TextBlock Text="Звіт" VerticalAlignment="Center" Margin="4,0" />
+            </StackPanel>
         </Button>
 
         <Button
-                        Width="110"
-                        Grid.Column="8"
-                        IsEnabled="False"
-                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        ToolTip="Resource name: MaterialDesignRaisedAccentButton">
+            Width="110"
+            Grid.Column="8"
+            Command="{Binding OnExportDataButtonClick}"
+            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+            ToolTip="Resource name: MaterialDesignRaisedAccentButton">
             ЕКСПОРТ
         </Button>
+
     </Grid>
 </UserControl>

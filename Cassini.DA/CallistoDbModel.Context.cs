@@ -57,5 +57,11 @@ namespace Cassini.DA
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<AgentActsComissionsSum_Result>("[CallistoDb].[AgentActsComissionsSum](@Period, @StartDate, @EndDate, @StatusGID, @CommissionType)", periodParameter, startDateParameter, endDateParameter, statusGIDParameter, commissionTypeParameter);
         }
+    
+        [DbFunction("CallistoDb", "GetDirections")]
+        public virtual IQueryable<GetDirections_Result> GetDirections()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetDirections_Result>("[CallistoDb].[GetDirections]()");
+        }
     }
 }

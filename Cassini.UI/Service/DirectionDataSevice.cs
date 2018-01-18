@@ -21,13 +21,10 @@ namespace Cassini.UI.Service
         {
             using (var callistoContext = _contextCreator())
             {
-                return await callistoContext.Branches
-                    .Where(b => b.BranchCode.Length == 2)
+                return await callistoContext.GetDirections()
                     .OrderBy(b => b.BranchCode)
                     .Select(b =>
-                    new Direction {Code = b.BranchCode, Title = b.Name, Guid = b.gid})
-                    .AsNoTracking()
-                    .ToListAsync();
+                        new Direction {Code = b.BranchCode, Title = b.Name, Guid = b.gid}).ToListAsync();
             }
         }
     }

@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace Cassini.UI.View
 {
     /// <summary>
-    /// Interaction logic for ParametersView.xaml
+    /// Interaction logic for AgentActsView.xaml
     /// </summary>
-    public partial class ParametersView : UserControl
+    public partial class AgentActsView : UserControl
     {
-        public ParametersView()
+        public AgentActsView()
         {
             InitializeComponent();
         }
-
     }
 }

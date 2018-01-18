@@ -9,9 +9,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:view="clr-namespace:Cassini.UI.View"
         Title="Експорт даних із агентських актів" 
-        Height="940" 
+        Height="880" 
         Width="1280"
-        MinHeight="940" 
+        MinHeight="880" 
         MinWidth="1280"
         TextElement.Foreground="{DynamicResource PrimaryHueDarkBrush}"
         TextElement.FontWeight="Regular"
@@ -37,6 +37,8 @@
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DatePicker.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" 
@@ -46,11 +48,10 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="425" />
+            <ColumnDefinition Width="434" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -60,27 +61,35 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Grid.Row="0"
-            Grid.RowSpan="2"
-            Height="120"
-            materialDesign:ShadowAssist.ShadowDepth="Depth2"
-            Mode="Light">
-            <StackPanel Orientation="Vertical">
+            Height="60"
+            materialDesign:ShadowAssist.ShadowDepth="Depth2">
+            <StackPanel>
                 <view:HeaderView />
-                <view:ParametersView DataContext="{Binding ParametersViewModel}"/>
             </StackPanel>
         </materialDesign:ColorZone>
         <!--body-->
-        <view:DirectionsView DataContext="{Binding DirectionsViewModel}" Grid.Column="0" Grid.Row="2"/>
+        <view:DirectionsView DataContext="{Binding DirectionsViewModel}" Grid.Column="0" Grid.Row="1" />
 
-        <ListBox
-            Grid.Row="2"
-            Grid.Column="1"
+        <!--<ListView 
+            Grid.Column="1" 
+            Grid.Row="1"
             Margin="20"
-            materialDesign:DataGridAssist.CellPadding="4 2 2 2"
-            materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2"
-            ItemsSource="{Binding SelectedDirections, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            ItemsSource="{Binding ActsResultSetSum}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding ActId}" Header="Акт" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding SummCommission}" Header="Винагорода" Width="160" />
+                    <GridViewColumn DisplayMemberBinding="{Binding DirCode}" Header="Дирекція" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding AgentName}" Header="Агент" Width="220" />
+                    <GridViewColumn DisplayMemberBinding="{Binding INN}" Header="ІПН/ЄДРПОУ" Width="120"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding DogType}" Header="Договір"  Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+        <view:AgentActsView DataContext="{Binding AgentActsViewModel}" Grid.Column="1" Grid.Row="1" Margin="20" />
 
-        </ListBox>
+
+
     </Grid>
 </Window>
 
