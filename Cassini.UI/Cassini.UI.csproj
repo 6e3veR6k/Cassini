@@ -36,6 +36,9 @@
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -88,6 +91,7 @@
     </ApplicationDefinition>
     <Compile Include="Event\ActResultSetLoadEvent.cs" />
     <Compile Include="Event\OnParametersButtonClickEvent.cs" />
+    <Compile Include="Event\ParametersChangesEvent.cs" />
     <Compile Include="Event\SelectedDirectionsEvent.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\ActsParametersDataService.cs" />
@@ -96,6 +100,7 @@
     <Compile Include="Service\IActsParametersDataService.cs" />
     <Compile Include="Service\IAgetActsCommissionDataService.cs" />
     <Compile Include="Service\IDirectionDataSevice.cs" />
+    <Compile Include="Service\XMLCreator.cs" />
     <Compile Include="StartUp\Bootstrapper.cs" />
     <Compile Include="ViewModel\ActResultSetSumView.cs" />
     <Compile Include="ViewModel\AgentActsViewModel.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="ViewModel\ISelectableViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ParametersViewModel.cs" />
+    <Compile Include="ViewModel\ValidationDate.cs" />
     <Compile Include="View\AgentActsView.xaml.cs">
       <DependentUpon>AgentActsView.xaml</DependentUpon>
     </Compile>

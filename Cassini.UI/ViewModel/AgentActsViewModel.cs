@@ -18,6 +18,19 @@ namespace Cassini.UI.ViewModel
         private ObservableCollection<ActResultSetSumView> _actsResultSetSum;
         private IEventAggregator _eventAggregator;
 
+        private bool _progressBarIsVisible;
+
+        public bool ProgressBarIsVisible
+        {
+            get { return _progressBarIsVisible; }
+            set
+            {
+                _progressBarIsVisible = value; 
+                RaisePropertyChanged();
+            }
+        }
+
+
         public ObservableCollection<ActsResultSet> ActsResultSet
         {
             get { return _actsResultSet; }
@@ -36,9 +49,19 @@ namespace Cassini.UI.ViewModel
             _agetActsCommissionDataService = agetActsCommissionDataService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<OnParametersButtonClickEvent>().Subscribe(Action);
-
+            _eventAggregator.GetEvent<ParametersChangesEvent>().Subscribe(OnParametersChanges);
+            ProgressBarIsVisible = false;
             ActsResultSet = new ObservableCollection<ActsResultSet>();
             ActsResultSetSum = new ObservableCollection<ActResultSetSumView>();
+        }
+
+        private void OnParametersChanges(bool propertyChanged)
+        {
+            if (propertyChanged)
+            {
+                ActsResultSet.Clear();
+                ActsResultSetSum.Clear();
+            }
         }
 
 
@@ -46,6 +69,7 @@ namespace Cassini.UI.ViewModel
         {
             ActsResultSetSum.Clear();
             ActsResultSet.Clear();
+            ProgressBarIsVisible = true;
             await GetCommissionActs(inputParametersModel);
         }
 
@@ -56,10 +80,11 @@ namespace Cassini.UI.ViewModel
             var actsResultSets = result as IList<ActsResultSet> ?? result.ToList();
 
             LoadActsResultSetSum(actsResultSets);
+            ProgressBarIsVisible = false;
             _eventAggregator.GetEvent<ActResultSetLoadEvent>().Publish(actsResultSets);
         }
 
-        private void LoadActsResultSetSum(IList<ActsResultSet> actsResultSets)
+        private void LoadActsResultSetSum(IEnumerable<ActsResultSet> actsResultSets)
         {
             var resultSum = from r in actsResultSets
                 group r by r.ActId
@@ -80,7 +105,7 @@ namespace Cassini.UI.ViewModel
             }
         }
 
-        private void LoadResultDataSet(IList<ActsResultSet> actsResultSets)
+        private void LoadResultDataSet(IEnumerable<ActsResultSet> actsResultSets)
         {
             foreach (var actsResultSet in actsResultSets)
             {

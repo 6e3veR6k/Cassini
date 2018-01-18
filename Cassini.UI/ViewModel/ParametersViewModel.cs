@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,87 +19,18 @@ using Prism.Mvvm;
 
 namespace Cassini.UI.ViewModel
 {
-    public class ParametersViewModel : BindableBase, IParametersViewModel
+    public class ParametersViewModel : BindableBase, IParametersViewModel, INotifyDataErrorInfo
     {
         private IActsParametersDataService _actsParametersDataService;
 
-        public ICommand OnViewReportButtonClick { get; set; }
-        public ICommand OnExportDataButtonClick { get; set; }
-
-        private bool _enableButtonExport;
-
-        public bool EnableButtonExport
-        {
-            get { return _enableButtonExport; }
-            set
-            {
-                _enableButtonExport = value; 
-                RaisePropertyChanged();
-            }
-        }
-
-
         private DateTime? _periodDate;
-
-        public DateTime? PeriodDateTime
-        {
-            get => _periodDate;
-            set
-            {
-                _periodDate = value; 
-                RaisePropertyChanged(nameof(PeriodDateTime));
-            }
-        }
-
         private DateTime? _startDate;
-
-        public DateTime? StartDateTime
-        {
-            get => _startDate;
-            set
-            {
-                _startDate = value;
-                RaisePropertyChanged(nameof(StartDateTime));
-            }
-        }
-
-
         private ActStatus _selectedActStatus;
-
-        public ActStatus SelectedActStatus
-        {
-            get { return _selectedActStatus; }
-            set
-            {
-                _selectedActStatus = value; 
-                RaisePropertyChanged(nameof(SelectedActStatus));
-            }
-        }
-
-        public ObservableCollection<DirectionViewModel> SelectedDirections { get; }
-
-
         private Commission _selectedCommission;
         private IEventAggregator _eventAggregator;
         private InputParametersModel _inputParametersModel;
-
-        public Commission SelectedCommission
-        {
-            get { return _selectedCommission; }
-            set
-            {
-                _selectedCommission = value; 
-                RaisePropertyChanged(nameof(SelectedCommission));
-            }
-        }
-
-
         private string _resultTextSet;
 
-
-        public ObservableCollection<ActStatus> ActStatuses { get; }
-        public ObservableCollection<Commission> CommissionTypes { get; }
-        public ObservableCollection<ChanelViewModel> Chanels { get; }
 
         public ParametersViewModel(IActsParametersDataService actsParametersDataService, IEventAggregator eventAggregator)
         {
@@ -111,13 +44,73 @@ namespace Cassini.UI.ViewModel
             _eventAggregator.GetEvent<SelectedDirectionsEvent>().Subscribe(GetDirections);
             _eventAggregator.GetEvent<ActResultSetLoadEvent>().Subscribe(LoadResultSet);
 
+
             OnViewReportButtonClick = new DelegateCommand(OnClickedViewReportButton, CanViewReport);
             OnExportDataButtonClick = new DelegateCommand(OnClickedExportDataButton, CanClickExport);
         }
 
+
+        public ICommand OnViewReportButtonClick { get; set; }
+        public ICommand OnExportDataButtonClick { get; set; }
+        
+
+        public DateTime? PeriodDateTime
+        {
+            get => _periodDate;
+            set
+            {
+                _periodDate = value; 
+                RaisePropertyChanged(nameof(PeriodDateTime));
+                ((DelegateCommand)OnViewReportButtonClick).RaiseCanExecuteChanged();
+            }
+        }
+
+        public DateTime? StartDateTime
+        {
+            get => _startDate;
+            set
+            {
+                _startDate = value;
+                RaisePropertyChanged(nameof(StartDateTime));
+                ((DelegateCommand)OnViewReportButtonClick).RaiseCanExecuteChanged();
+            }
+        }
+        
+        public ActStatus SelectedActStatus
+        {
+            get { return _selectedActStatus; }
+            set
+            {
+                _selectedActStatus = value; 
+                RaisePropertyChanged(nameof(SelectedActStatus));
+                ((DelegateCommand)OnViewReportButtonClick).RaiseCanExecuteChanged();
+            }
+        }
+
+        public ObservableCollection<DirectionViewModel> SelectedDirections { get; }
+
+        public Commission SelectedCommission
+        {
+            get { return _selectedCommission; }
+            set
+            {
+                _selectedCommission = value; 
+                RaisePropertyChanged(nameof(SelectedCommission));
+                ((DelegateCommand)OnViewReportButtonClick).RaiseCanExecuteChanged();
+            }
+        }
+
+        public ObservableCollection<ActStatus> ActStatuses { get; }
+
+        public ObservableCollection<Commission> CommissionTypes { get; }
+
+        public ObservableCollection<ChanelViewModel> Chanels { get; }
+
+
+
         private void LoadResultSet(IEnumerable<ActsResultSet> actsResultSets)
         {
-            EnableButtonExport = true;
+            ((DelegateCommand)OnExportDataButtonClick).RaiseCanExecuteChanged();
             _resultTextSet = GetTextFromDataSet(actsResultSets);
         }
 
@@ -134,8 +127,8 @@ namespace Cassini.UI.ViewModel
 
         private bool CanViewReport()
         {
-            //return (PeriodDateTime != null && StartDateTime != null && SelectedActStatus != null && SelectedCommission != null);
-            return true;
+            return (PeriodDateTime.HasValue && StartDateTime.HasValue && SelectedActStatus != null && SelectedCommission != null);
+            //return true;
         }
 
         private void OnClickedViewReportButton()
@@ -183,7 +176,7 @@ namespace Cassini.UI.ViewModel
 
         private bool CanClickExport()
         {
-            return true;
+            return !String.IsNullOrEmpty(_resultTextSet);
         }
 
         private void OnClickedExportDataButton()
@@ -251,5 +244,66 @@ namespace Cassini.UI.ViewModel
             return resultString.ToString();
         }
 
+        #region INotifyDataErrorInfo implementation
+
+        private Dictionary<string, List<string>> _errorsByPropertyName = new Dictionary<string, List<string>>();
+
+        public bool HasErrors => _errorsByPropertyName.Any();
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        public IEnumerable GetErrors(string propertyName)
+        {
+            return _errorsByPropertyName.ContainsKey(propertyName) ? _errorsByPropertyName[propertyName] : null;
+        }
+
+        private void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        private void AddError(string propertyName, string error)
+        {
+            if (!_errorsByPropertyName.ContainsKey(propertyName))
+            {
+                _errorsByPropertyName[propertyName] = new List<string>();
+            }
+
+            if (_errorsByPropertyName[propertyName].Contains(error)) return;
+            _errorsByPropertyName[propertyName].Add(error);
+            OnErrorsChanged(propertyName);
+        }
+
+        private void ClearErrors(string propertyName)
+        {
+            if (!_errorsByPropertyName.ContainsKey(propertyName)) return;
+            _errorsByPropertyName.Remove(propertyName);
+            OnErrorsChanged(propertyName);
+        }
+
+
+        #endregion
+
+        #region Validation
+
+        //private void ValidateProperty(string propertyName)
+        //{
+        //    ClearErrors(propertyName);
+        //    ValidateProperty(nameof(PeriodDateTime));
+        //    switch (propertyName)
+        //    {
+
+        //    }
+        //}
+
+        #endregion
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            base.OnPropertyChanged(args);
+            _resultTextSet = null;
+            ((DelegateCommand)OnExportDataButtonClick).RaiseCanExecuteChanged();
+            _eventAggregator.GetEvent<ParametersChangesEvent>().Publish(true);
+        }
     }
 }
