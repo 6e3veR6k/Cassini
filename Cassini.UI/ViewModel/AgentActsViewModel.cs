@@ -30,6 +30,31 @@ namespace Cassini.UI.ViewModel
             }
         }
 
+        private bool? _isAllActsSelected;
+        public bool? IsAllActsSelected
+        {
+            get { return _isAllActsSelected; }
+            set
+            {
+                if (_isAllActsSelected == value) return;
+
+                _isAllActsSelected = value;
+
+                if (_isAllActsSelected.HasValue)
+                    SelectAll(_isAllActsSelected.Value, ActsResultSetSum);
+
+                RaisePropertyChanged();
+            }
+        }
+
+        private static void SelectAll(bool select, IEnumerable<ActResultSetSumView> actsResultSetSum)
+        {
+            foreach (var act in actsResultSetSum)
+            {
+                act.IsSelected = select;
+            }
+        }
+
 
         public ObservableCollection<ActsResultSet> ActsResultSet
         {
@@ -50,10 +75,22 @@ namespace Cassini.UI.ViewModel
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<OnParametersButtonClickEvent>().Subscribe(Action);
             _eventAggregator.GetEvent<ParametersChangesEvent>().Subscribe(OnParametersChanges);
+            _eventAggregator.GetEvent<ExportButtonIsClickedEvent>().Subscribe(LoadSelectedActs);
             ProgressBarIsVisible = false;
             ActsResultSet = new ObservableCollection<ActsResultSet>();
             ActsResultSetSum = new ObservableCollection<ActResultSetSumView>();
         }
+
+        private void LoadSelectedActs(bool exportButtonClicked)
+        {
+            if (exportButtonClicked)
+            {
+                var actsResultSets = ActsResultSet
+                    .Join(ActsResultSetSum.Where(x => x.IsSelected), x => x.ActId, y => y.ActId, (x, y) => x);
+
+                _eventAggregator.GetEvent<ActResultSetLoadEvent>().Publish(actsResultSets);
+            }
+        }   
 
         private void OnParametersChanges(bool propertyChanged)
         {
@@ -78,10 +115,11 @@ namespace Cassini.UI.ViewModel
 
             var result = await _agetActsCommissionDataService.GetActsComissionsSumResults(inputParameters);
             var actsResultSets = result as IList<ActsResultSet> ?? result.ToList();
-
+            LoadResultDataSet(actsResultSets);
             LoadActsResultSetSum(actsResultSets);
             ProgressBarIsVisible = false;
-            _eventAggregator.GetEvent<ActResultSetLoadEvent>().Publish(actsResultSets);
+            _eventAggregator.GetEvent<ExportButtonEvent>().Publish(true);
+            //_eventAggregator.GetEvent<ActResultSetLoadEvent>().Publish(actsResultSets);
         }
 
         private void LoadActsResultSetSum(IEnumerable<ActsResultSet> actsResultSets)

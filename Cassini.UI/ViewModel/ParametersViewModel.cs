@@ -31,6 +31,15 @@ namespace Cassini.UI.ViewModel
         private InputParametersModel _inputParametersModel;
         private string _resultTextSet;
 
+        private bool _exportButtonIsEnable;
+
+        public bool ExportButtonIsEnable
+        {
+            get { return _exportButtonIsEnable; }
+            set { _exportButtonIsEnable = value; }
+        }
+
+
 
         public ParametersViewModel(IActsParametersDataService actsParametersDataService, IEventAggregator eventAggregator)
         {
@@ -43,10 +52,17 @@ namespace Cassini.UI.ViewModel
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<SelectedDirectionsEvent>().Subscribe(GetDirections);
             _eventAggregator.GetEvent<ActResultSetLoadEvent>().Subscribe(LoadResultSet);
+            _eventAggregator.GetEvent<ExportButtonEvent>().Subscribe(ExportButtonIsEnableChange);
 
 
             OnViewReportButtonClick = new DelegateCommand(OnClickedViewReportButton, CanViewReport);
             OnExportDataButtonClick = new DelegateCommand(OnClickedExportDataButton, CanClickExport);
+        }
+
+        private void ExportButtonIsEnableChange(bool obj)
+        {
+            ExportButtonIsEnable = obj;
+            ((DelegateCommand)OnExportDataButtonClick).RaiseCanExecuteChanged();
         }
 
 
@@ -107,10 +123,10 @@ namespace Cassini.UI.ViewModel
         public ObservableCollection<ChanelViewModel> Chanels { get; }
 
 
-
         private void LoadResultSet(IEnumerable<ActsResultSet> actsResultSets)
         {
             ((DelegateCommand)OnExportDataButtonClick).RaiseCanExecuteChanged();
+
             _resultTextSet = GetTextFromDataSet(actsResultSets);
         }
 
@@ -176,15 +192,22 @@ namespace Cassini.UI.ViewModel
 
         private bool CanClickExport()
         {
-            return !String.IsNullOrEmpty(_resultTextSet);
+            return ExportButtonIsEnable;
         }
 
         private void OnClickedExportDataButton()
         {
+            _eventAggregator.GetEvent<ExportButtonIsClickedEvent>().Publish(true);
+
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = "part_";
+            saveFileDialog.DefaultExt = ".text";
+            saveFileDialog.Filter = "Text documents (.txt)|*.txt";
+
             if (saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveFileDialog.FileName, _resultTextSet);
+                
+                File.WriteAllText(saveFileDialog.FileName, _resultTextSet, Encoding.UTF8);
             }
         }
 

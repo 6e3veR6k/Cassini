@@ -18,6 +18,9 @@
         TitleForeground="{DynamicResource AccentColorBrush4}"            
         MinHeight="860" 
         MinWidth="1280"
+        Icon="Ico/if_Jupiter_1715797.ico"
+        ShowIconOnTitleBar="False"
+        IconBitmapScalingMode="HighQuality"
         TextElement.Foreground="{DynamicResource PrimaryHueDarkBrush}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
@@ -29,17 +32,10 @@
         <ItemContainerTemplate>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="28"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon
-                    Foreground="OrangeRed"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="18"
-                    Height="18"
-                    Kind="Fire" />
                 <TextBlock Grid.Column="1" VerticalAlignment="Center">Експорт даних по актам агентів</TextBlock>
             </Grid>
         </ItemContainerTemplate>
