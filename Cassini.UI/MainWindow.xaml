@@ -1,17 +1,22 @@
-﻿<Window x:Class="Cassini.UI.MainWindow"
+﻿<metro:MetroWindow x:Class="Cassini.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        BorderThickness="1"
+        BorderBrush="{DynamicResource WindowTitleColorBrush}"
         xmlns:local="clr-namespace:Cassini.UI"
         mc:Ignorable="d"
         xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:view="clr-namespace:Cassini.UI.View"
         Title="Експорт даних із агентських актів" 
-        Height="880" 
+        Height="860" 
         Width="1280"
-        MinHeight="880" 
+        TitlebarHeight="24"
+        TitleForeground="{DynamicResource AccentColorBrush4}"            
+        MinHeight="860" 
         MinWidth="1280"
         TextElement.Foreground="{DynamicResource PrimaryHueDarkBrush}"
         TextElement.FontWeight="Regular"
@@ -20,6 +25,25 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
+    <metro:MetroWindow.TitleTemplate>
+        <ItemContainerTemplate>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="28"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon
+                    Foreground="OrangeRed"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="18"
+                    Height="18"
+                    Kind="Fire" />
+                <TextBlock Grid.Column="1" VerticalAlignment="Center">Експорт даних по актам агентів</TextBlock>
+            </Grid>
+        </ItemContainerTemplate>
+    </metro:MetroWindow.TitleTemplate>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -91,5 +115,5 @@
 
 
     </Grid>
-</Window>
+</metro:MetroWindow>
 

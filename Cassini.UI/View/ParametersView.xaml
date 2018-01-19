@@ -100,6 +100,7 @@
                             VerticalAlignment="Center"
                             Width="24"
                             Height="24"
+                            ToolTip="Канали агентів"
                             Kind="AccountMultiple" />
                     </Border>
                 </Grid>
@@ -194,7 +195,7 @@
             Grid.Column="8"
             Command="{Binding OnExportDataButtonClick}"
             Style="{StaticResource MaterialDesignRaisedAccentButton}"
-            ToolTip="Resource name: MaterialDesignRaisedAccentButton">
+            ToolTip="Вивантажити файл">
             ЕКСПОРТ
         </Button>
 

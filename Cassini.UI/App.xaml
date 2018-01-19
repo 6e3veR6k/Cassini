@@ -6,8 +6,18 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
+                <!-- MahApps -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
 
                 <!-- primary color -->
                 <ResourceDictionary>
@@ -39,7 +49,30 @@
                     <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource 'Blue GreyPrimary900Foreground'}"/>
                 </ResourceDictionary>
 
+
+
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- MahApps Brushes -->
+            <SolidColorBrush x:Key="HighlightBrush" Color="{DynamicResource 'Blue GreyPrimary700'}"/>
+            <SolidColorBrush x:Key="AccentBaseColorBrush" Color="{DynamicResource 'Blue GreyPrimary500'}" />
+            <SolidColorBrush x:Key="AccentColorBrush2" Color="{DynamicResource 'Blue GreyPrimary400'}"/>
+            <SolidColorBrush x:Key="AccentColorBrush3" Color="{DynamicResource 'Blue GreyPrimary300'}"/>
+            <SolidColorBrush x:Key="AccentColorBrush4" Color="{DynamicResource 'Blue GreyPrimary100'}"/>
+            <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource 'Blue GreyPrimary700'}"/>
+            <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{DynamicResource 'Blue GreyPrimary500Foreground'}"/>
+            <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+                <GradientStop Color="{DynamicResource 'Blue GreyPrimary700'}" Offset="0"/>
+                <GradientStop Color="{DynamicResource 'Blue GreyPrimary300'}" Offset="1"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="CheckmarkFill" Color="{DynamicResource 'Blue GreyPrimary500'}"/>
+            <SolidColorBrush x:Key="RightArrowFill" Color="{DynamicResource 'Blue GreyPrimary500'}"/>
+            <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource 'Blue GreyPrimary500Foreground'}"/>
+            <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource 'Blue GreyPrimary500'}" Opacity="0.4"/>
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchBrush.Win10" Color="{DynamicResource 'Blue GreyPrimary500'}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource 'Blue GreyPrimary400'}" />
+            <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource 'Blue GreyPrimary500Foreground'}" />
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

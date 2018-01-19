@@ -35,20 +35,24 @@
             <DataGridTextColumn
                     Binding="{Binding ActId}"
                     IsReadOnly="True"
+                    MaxWidth="100"
                     ElementStyle="{StaticResource MaterialDesignButtonTextBlock}"
                     Header="Акт" />
             <!--  if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn  -->
             <materialDesign:MaterialDataGridTextColumn
                     Binding="{Binding SummCommission}"
                     IsReadOnly="True"
+                    MinWidth="110"
                     Header="Комісія" />
             <DataGridTextColumn 
                     IsReadOnly="True"
                     Header="Агент"
+                    MinWidth="200"
                     Binding="{Binding AgentName}"/>
             <DataGridTextColumn 
                     IsReadOnly="True"
                     Header="ІПН/ЄДРПОУ"
+                    MaxWidth="200"
                     Binding="{Binding INN}"/>
             <DataGridTextColumn 
                     IsReadOnly="True"
